@@ -1,9 +1,8 @@
 from telebot import types
 
-from .markup import Markup
-
-from menu_goods import goods_data
 from config import button_text
+from menu_goods import goods_data
+from .markup import Markup
 
 
 class MenuMarkup(Markup):
@@ -22,4 +21,5 @@ class MenuMarkup(Markup):
 class MenuBack(Markup):
     def __init__(self, back_v: bool = False):
         self.markup = types.InlineKeyboardMarkup()
-        self.markup.row(types.InlineKeyboardButton(text=button_text.get("back"), callback_data="-1" if back_v else "-2"))
+        self.markup.row(
+            types.InlineKeyboardButton(text=button_text.get("back"), callback_data="-1" if back_v else "-2"))

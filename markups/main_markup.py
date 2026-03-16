@@ -1,7 +1,7 @@
 from telebot import types
 
-from .markup import Markup
 from config import button_text
+from .markup import Markup
 
 
 class MainMenuMarkup(Markup):

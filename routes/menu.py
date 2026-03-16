@@ -5,8 +5,7 @@ from telebot.async_telebot import AsyncTeleBot
 from telebot.types import Message, CallbackQuery
 
 from markups.menu_markup import MenuMarkup, MenuBack
-
-from menu_goods import Goods,goods_data
+from menu_goods import Goods, goods_data
 
 
 async def menu_handler(event: Message, bot: AsyncTeleBot):
