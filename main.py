@@ -8,6 +8,7 @@ bot = AsyncTeleBot(BOT_AUTH)
 
 bot.register_message_handler(
     routes.start_handler,
+    commands=['start'],
     chat_types=['private'],
     pass_bot=True
 )
