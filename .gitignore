@@ -1,3 +1,6 @@
 # PEP-3147
 **/__pycache__/*.pyc
 
+# Sensetive environment
+.env
+
