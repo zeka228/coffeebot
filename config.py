@@ -7,4 +7,4 @@ button_text = {
 }
 
 BOT_VERBOSE = environ.get('COFFEE_VERBOSE', False)
-BOT_AUTH = environ.get('BOT_AUTH', '')
+BOT_AUTH = environ.get('COFFEE_AUTH', '')
