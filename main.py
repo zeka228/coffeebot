@@ -1,11 +1,29 @@
 import asyncio
+from typing import Union, Optional
 
 from telebot.async_telebot import AsyncTeleBot, logger
 
 import routes
 from config import BOT_AUTH, BOT_VERBOSE, button_text
 
-bot = AsyncTeleBot(BOT_AUTH)
+
+class SafeDeleteBot(AsyncTeleBot):
+    async def delete_message(
+            self,
+            chat_id: Union[int, str],
+            message_id: int,
+            timeout: Optional[int] = None
+    ) -> bool:
+        try:
+            _ = await super().delete_message(chat_id, message_id, timeout)
+        except Exception as e:
+            logger.log(e)
+        else:
+            return _
+        return False
+
+
+bot = SafeDeleteBot(BOT_AUTH)
 
 """Register initial route
 - start
