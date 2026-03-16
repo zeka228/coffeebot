@@ -19,6 +19,7 @@ async def start_handler(event: Message, bot: AsyncTeleBot):
     prev_msg = await bot.get_state(event.from_user.id)
     if prev_msg:
         await bot.delete_message(event.from_user.id, int(prev_msg))
+        await bot.delete_state(event.from_user.id)
     await bot.set_state(
         user_id=event.from_user.id,
         state=sent.message_id
@@ -40,3 +41,4 @@ async def about_handler(event: Message, bot: AsyncTeleBot):
     prev_msg = await bot.get_state(event.from_user.id)
     if prev_msg:
         await bot.delete_message(event.from_user.id, int(prev_msg))
+        await bot.delete_state(event.from_user.id)
