@@ -26,6 +26,6 @@ async def get_single(db_id: int) -> GoodsType:
         fetch = await (await aiosqlite_db.execute(
             "SELECT id, readable_name, price "
             "from goods "
-            "WHERE id = (?)", db_id
+            "WHERE id = (?)", (db_id,)
         )).fetchone()
     return GoodsType(*fetch)
