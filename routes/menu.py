@@ -5,14 +5,15 @@ from telebot.async_telebot import AsyncTeleBot
 from telebot.types import Message, CallbackQuery
 
 from markups.menu_markup import MenuMarkup, MenuBack
-from menu_goods import Goods, goods_data
+from menu_goods import get_all_goods
 
 
 async def menu_handler(event: Message, bot: AsyncTeleBot):
+    sqlite_menu_goods = await get_all_goods()
     sent = await bot.send_message(
         event.from_user.id,
         parse_mode="MarkdownV2",
-        reply_markup=MenuMarkup().get_markup(),
+        reply_markup=MenuMarkup(sqlite_menu_goods).get_markup(),
         text=
         (
             "📖 Наше меню:"
@@ -29,7 +30,7 @@ async def menu_handler(event: Message, bot: AsyncTeleBot):
 
 
 async def menu_good(event: CallbackQuery, bot: AsyncTeleBot):
-    selected_good = goods_data[Goods(int(event.data))]
+    selected_good = ["Name", 1]  # TODO: Retrieve (`readable_name`, `price`) from sqlite where id `int(event.data)`,
     good_photo = FileIO((Path.cwd() / "bins" / f"{event.data}.jpg").resolve())
     sent = await bot.send_photo(
         event.from_user.id,
