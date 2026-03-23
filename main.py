@@ -2,9 +2,10 @@ import asyncio
 from typing import Union, Optional
 
 from telebot.async_telebot import AsyncTeleBot, logger
+from telebot import asyncio_helper
 
 import routes
-from config import BOT_AUTH, BOT_VERBOSE, button_text
+from config import BOT_AUTH, BOT_VERBOSE, BOT_PROXY, button_text
 
 
 class SafeDeleteBot(AsyncTeleBot):
@@ -17,7 +18,7 @@ class SafeDeleteBot(AsyncTeleBot):
         try:
             _ = await super().delete_message(chat_id, message_id, timeout)
         except Exception as e:
-            logger.log(e)
+            logger.log(30, e)
         else:
             return _
         return False
@@ -78,8 +79,10 @@ bot.register_callback_query_handler(
 )
 
 if __name__ == "__main__":
+    asyncio_helper.proxy = BOT_PROXY
     if BOT_VERBOSE:
         logger.setLevel(10)
+        logger.log(10, f"Current proxy: {BOT_PROXY}")
         asyncio.run(bot.polling(skip_pending=True))
     else:
         asyncio.run(bot.infinity_polling(skip_pending=True))
