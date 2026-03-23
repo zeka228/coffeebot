@@ -1,28 +1,31 @@
-from enum import Enum
+import aiosqlite
+
+from typing import NamedTuple
 
 
-class Goods(Enum):
-    espresso = 0
-    americano = 1
-    cappuccino = 2
-    latte = 3
-    raf = 4
-    new_york = 5
-    tiramisu = 6
-    potato = 7
-    brownie = 8
-    strudel = 9
+class GoodsType(NamedTuple):
+    db_id: int
+    readable_name: str
+    price: int
 
 
-goods_data = {
-    Goods.espresso: ["Эспрессо", 150],
-    Goods.americano: ["Американо", 180],
-    Goods.cappuccino: ["Капучино", 200],
-    Goods.latte: ["Латте", 210],
-    Goods.raf: ["Раф", 250],
-    Goods.new_york: ["Чизкейк Нью-Йорк", 200],
-    Goods.tiramisu: ["Тирамису", 200],
-    Goods.potato: ["Пирожное Картошка", 90],
-    Goods.brownie: ["Брауни", 250],
-    Goods.strudel: ["Штрудель", 220]
-}
+async def get_all_goods() -> tuple[GoodsType, ...]:
+    goods = []
+    async with aiosqlite.connect("actual_db.db") as aiosqlite_db:
+        fetch = await (await aiosqlite_db.execute(
+            "SELECT id, readable_name, price "
+            "from goods"
+        )).fetchall()
+        for _ in fetch:
+            goods.append(GoodsType(*_))
+    return tuple(goods)
+
+
+async def get_single(db_id: int) -> GoodsType:
+    async with aiosqlite.connect("actual_db.db") as aiosqlite_db:
+        fetch = await (await aiosqlite_db.execute(
+            "SELECT id, readable_name, price "
+            "from goods "
+            "WHERE id = (?)", (db_id,)
+        )).fetchone()
+    return GoodsType(*fetch)
